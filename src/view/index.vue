@@ -8,23 +8,44 @@
       </mt-header>
     </div>
     <div class="indexSwipe">
-      <mt-swipe :auto="4000">
-        <mt-swipe-item>1</mt-swipe-item>
-        <mt-swipe-item>2</mt-swipe-item>
-        <mt-swipe-item>3</mt-swipe-item>
-      </mt-swipe>
+       <img src="https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg" alt=""  referrerpolicy ="never">
+      <!-- <mt-swipe :auto="4000">
+        <mt-swipe-item>
+          <img src="https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg" alt="">
+        </mt-swipe-item>
+        <mt-swipe-item>
+          <img src="https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg" alt="">
+        </mt-swipe-item>
+        <mt-swipe-item>
+          <img src="https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg" alt="">
+        </mt-swipe-item>
+      </mt-swipe> -->
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    
+  },
+  
+};
 </script>
 
 <style lang="scss" scoped>
 #indexBox  {
     .indexSwipe {
         height:200px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
     }
 }
 </style>
