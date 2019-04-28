@@ -8,16 +8,11 @@
       </mt-header>
     </div>
     <div class="indexSwipe">
-       <!-- <img :src="attachImageUrl('https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg')" alt="" > -->
       <mt-swipe :auto="4000">
-        <mt-swipe-item>
-          <img src="https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg" alt="">
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <img src="https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg" alt="">
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <img src="https://pic1.zhimg.com/v2-1fe7a76e8ffbc94fd709d916bdeb8c58.jpg" alt="">
+        <mt-swipe-item v-for="item in swipeList">
+          <!-- 使用attachImageUrl方法转换url，解决防盗链问题 -->
+          <img :src="attachImageUrl(item.image)" alt="">
+          <span></span>
         </mt-swipe-item>
       </mt-swipe>
     </div>
@@ -58,6 +53,9 @@ export default {
 
 <style lang="scss" scoped>
 #indexBox  {
+    .indexHeader{
+      margin-bottom: 40px;
+    }
     .indexSwipe {
         height:200px;
         img{
@@ -66,4 +64,5 @@ export default {
         }
     }
 }
+
 </style>
