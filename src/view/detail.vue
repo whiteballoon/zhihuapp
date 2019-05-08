@@ -6,7 +6,15 @@
       <span class="imgSource">图片：{{detailMsg.image_source}}</span>
     </div>
     <div class="articleBody" v-html="detailMsg.body"></div>
-    <div class="articleBottom"></div>
+    <div class="articleBottom">
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
   </div>
 </template>
 
