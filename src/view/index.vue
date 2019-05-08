@@ -17,7 +17,7 @@
       </mt-swipe>
     </div>
     <div class="indexList">
-      <mt-cell class="pd15" :title="item.title" v-for="item in topList"  @click="toDetail(item.id)">
+      <mt-cell class="pd15" :title="item.title" v-for="item in topList" @click.native="toDetail(item.id)">
         <img :src="attachImageUrl(item.images[0])" alt="">
       </mt-cell>
     </div>
