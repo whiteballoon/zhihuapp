@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Index from '../view/index.vue'
 import Detail from '../view/detail.vue'
+import Comments from '../view/comments.vue'
 
 Vue.use(Router);
 
@@ -14,6 +15,10 @@ export default new Router({
         {
             path: '/detail/:id',
             component: Detail
+        },
+        {
+            path: '/comments/:id',
+            component: Comments
         },
     ]
 });
