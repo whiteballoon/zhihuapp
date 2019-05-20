@@ -12,6 +12,12 @@ Vue.use(Mint);
 
 import './assets/fonts/iconfont.css'
 
+// import {formatDate} from './utils/date.js'
+// Vue.filter('timestampToDate',function(time){
+//   var date = new Date(time);
+//   return formatDate(date, 'yyyy-MM-dd hh:mm');
+// })
+
 Vue.config.productionTip = false
 
 new Vue({

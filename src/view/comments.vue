@@ -4,7 +4,7 @@
       <div class="long-comments">
           <div class="total">{{longComments.length}}条长评</div>
           <ul>
-              <li v-for="item in longComments">
+              <li v-for="(item,index) in longComments" :key="index">
                   <span class="left"><img :src="attachImageUrl(item.avatar)" alt=""></span>
                   <span class="right">
                       <p>
@@ -16,7 +16,7 @@
                           <span>//{{item.reply_to.author}}:</span>
                           {{item.reply_to.content}}
                       </p>
-                      <p class="time">01-19 08:36</p>
+                      <p class="time">{{item.time|formatDate}}</p>
                   </span>
               </li>
           </ul>
@@ -27,7 +27,7 @@
               <i class="iconfont icon-xia" @click="shortCommentsShow = !shortCommentsShow"></i>
            </div>
             <ul v-show="shortCommentsShow">
-              <li v-for="item in shortComments">
+              <li v-for="(item,index) in shortComments" :key="index">
                   <span class="left"><img :src="attachImageUrl(item.avatar)" alt=""></span>
                   <span class="right">
                       <p>
@@ -39,7 +39,7 @@
                           <span>//{{item.reply_to.author}}:</span>
                           {{item.reply_to.content}}
                       </p>
-                      <p class="time">01-19 08:36</p>
+                      <p class="time">{{item.time|formatDate}}</p>
                   </span>
               </li>
           </ul>
@@ -49,6 +49,7 @@
 
 <script>
 import { getLongCommentsApi, getShortCommentsApi } from '@/api/index.js'
+import {formatDate} from '../utils/date.js'
 
 export default {
   data() {
@@ -64,6 +65,14 @@ export default {
         // 短评是否展示
         shortCommentsShow: false,
     }
+  },
+  filters:{
+    formatDate(time){
+        // time为秒s的时间戳，需要转换成毫秒
+        var htime = time + '000';
+        var date = new Date(Number(htime));
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
+    },
   },
   mounted() {
     this.getDetailId()
@@ -85,9 +94,9 @@ export default {
             getShortCommentsApi(this.id).then(response => {  
                 this.shortComments = response.data.comments;
                 this.total = this.longComments.length + this.shortComments.length;
-                console.log(this.longComments.length)
-                console.log(this.total)
-                console.log(this.shortComments)
+                //  console.log(this.longComments.length)
+                // console.log(this.total)
+                // console.log(this.shortComments)
             }).catch(
             )
         }).catch(
