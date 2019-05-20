@@ -16,7 +16,7 @@
                           <span>//{{item.reply_to.author}}:</span>
                           {{item.reply_to.content}}
                       </p>
-                      <p class="time">{{item.time|formatDate}}</p>
+                      <p class="time">{{item.time|timestampToDate}}</p>
                   </span>
               </li>
           </ul>
@@ -39,7 +39,7 @@
                           <span>//{{item.reply_to.author}}:</span>
                           {{item.reply_to.content}}
                       </p>
-                      <p class="time">{{item.time|formatDate}}</p>
+                      <p class="time">{{item.time|timestampToDate}}</p>
                   </span>
               </li>
           </ul>
@@ -49,7 +49,6 @@
 
 <script>
 import { getLongCommentsApi, getShortCommentsApi } from '@/api/index.js'
-import {formatDate} from '../utils/date.js'
 
 export default {
   data() {
@@ -65,14 +64,6 @@ export default {
         // 短评是否展示
         shortCommentsShow: false,
     }
-  },
-  filters:{
-    formatDate(time){
-        // time为秒s的时间戳，需要转换成毫秒
-        var htime = time + '000';
-        var date = new Date(Number(htime));
-        return formatDate(date, 'yyyy-MM-dd hh:mm');
-    },
   },
   mounted() {
     this.getDetailId()
@@ -102,8 +93,6 @@ export default {
         }).catch(
         )
     },
-    // 时间戳转换工具
-    // 明天将时间戳转换和img 都 转换成过滤器
   },
   
 };
