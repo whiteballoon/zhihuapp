@@ -1,5 +1,6 @@
 <template>
   <div id="indexBox">
+    <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
     <div class="indexHeader">
       <mt-header fixed title="今日热闻">
         <mt-button @click.native="handleClick" slot="left">
@@ -21,19 +22,24 @@
         <img :src="attachImageUrl(item.images[0])" alt="">
       </mt-cell>
     </div>
+    </mt-loadmore>
   </div>
 </template>
 
 <script>
-import { getSwipeListApi } from '@/api/index.js'
+import { getSwipeListApi,getBeforeMsgApi } from '@/api/index.js'
 
 export default {
   data() {
     return {
       // 轮播图数组
-      swipeList:[],
+      swipeList: [],
       // 首页主体列表信息
       topList: [],
+      // 记录消息日期
+      newsDate: '',
+      time: null,
+      allLoaded: '',
     }
   },
   mounted() {
@@ -56,6 +62,45 @@ export default {
       }).catch(
       )
     },
+    // 获取日期信息
+    getBeforeDate:function(){
+      // var str  = new Date()
+      // var year  =  str.getFullYear()
+      // var month =  str.getMonth()+1<10?0+String(str.getMonth()+1):String(str.getMonth()+1)
+      // var day = str.getDate()
+      // this.newsDate = year+month+day
+      if(this.time){
+        var str  = new Date(this.time-1000*60*60*24)
+      }else{
+        var str  = new Date()
+      }
+      this.time =  str;
+      var year  =  str.getFullYear()
+      var month =  str.getMonth()+1<10?0+String(str.getMonth()+1):String(str.getMonth()+1)
+      var day = str.getDate()
+      this.newsDate = year+month+day
+      console.log(this.newsDate)
+    },
+    // 根据日期获取过往消息
+    getBeforeMsg:function(date){
+      getBeforeMsgApi(date).then(response => {
+        this.topList.push(...response.data.stories);
+      }).catch(
+      )
+    },
+    // 下拉刷新
+    loadTop: function(){
+      this.getIndexList();
+      this.$refs.loadmore.onTopLoaded();
+    },
+    // 上拉加载
+    loadBottom:function() {
+      // 加载更多数据
+      this.getBeforeDate();
+      this.getBeforeMsg(this.newsDate);
+      // 若数据已全部获取完毕
+      this.$refs.loadmore.onBottomLoaded();
+    },  
     // 跳转详情页
     toDetail: function(id){
       this.$router.push({path:'/detail/'+id})
@@ -67,6 +112,8 @@ export default {
 
 <style lang="scss" scoped>
 #indexBox {
+    overflow:scroll;
+    height: 600px;
     .indexHeader {
       margin-bottom: 40px;
     }

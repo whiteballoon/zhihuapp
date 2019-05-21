@@ -40,3 +40,11 @@ export function getShortCommentsApi(id) {
     data: {}
   })
 }
+// 根据日期获取过往消息
+export function getBeforeMsgApi(date) {
+  return request({
+    url: 'api/4/news/before/'+date,
+    method: 'GET',
+    data: {}
+  })
+}
