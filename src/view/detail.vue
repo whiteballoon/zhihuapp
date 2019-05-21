@@ -62,6 +62,7 @@ export default {
       getPopularityApi(this.id).then(response => {  
         this.popularity = response.data.popularity;
         this.comments = response.data.comments;
+        this.$store.commit('commentsNum',this.comments)
       }).catch(
       )
     },

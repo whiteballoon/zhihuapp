@@ -23,7 +23,7 @@
       </div>
       <div class="short-comments">
           <div class="total">
-              <span>{{shortComments.length}}条短评</span>
+              <span>{{shortCommentsNum}}条短评</span>
               <i class="iconfont icon-xia" @click="shortCommentsShow = !shortCommentsShow"></i>
            </div>
             <ul v-show="shortCommentsShow">
@@ -59,6 +59,8 @@ export default {
         longComments:'',
         // 短评
         shortComments:'',
+        // 短评数
+        shortCommentsNum:'',
         // 评论总数
         total:'',
         // 短评是否展示
@@ -78,16 +80,15 @@ export default {
     getDetailId:function(){
         // 获取传过来的id
         this.id = this.$route.params.id;
+        // 获取评论总数
+        this.total = this.$store.state.commentsTotal;
         //获取长评
         getLongCommentsApi(this.id).then(response => {  
             this.longComments = response.data.comments;
+            this.shortCommentsNum = this.total - this.longComments.length;
             // 获取短评
             getShortCommentsApi(this.id).then(response => {  
                 this.shortComments = response.data.comments;
-                this.total = this.longComments.length + this.shortComments.length;
-                //  console.log(this.longComments.length)
-                // console.log(this.total)
-                // console.log(this.shortComments)
             }).catch(
             )
         }).catch(
