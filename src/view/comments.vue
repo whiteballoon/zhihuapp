@@ -44,6 +44,12 @@
               </li>
           </ul>
       </div>
+      <div class="writeComments">
+      <ul>
+        <li><i class="iconfont icon-fanhui" @click="$router.go(-1)"></i></li>
+        <li><i class="iconfont icon-xiewrite18" >写评论</i></li>
+      </ul>
+      </div>
   </div>
 </template>
 
@@ -227,6 +233,39 @@ $mainColor:#26a2ff;
            }
        } 
     }
+}
+.writeComments {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  border-top: 1px solid #f5f5f5;
+  background: #3c3c3c;
+  ul {
+    display: flex;
+    padding: 0;
+    li {
+        flex: 4;
+      &:first-child{
+          flex: 1;
+          border-right: 1px solid #555;
+      }
+      i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        line-height: 40px;
+        font-size: 18px;
+        font-weight: 300;
+        color: #d3d3d3;
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }
 
 </style>

@@ -3,10 +3,6 @@ import App from './App.vue'
 import router from './router/index'
 import store from './store'
 
-import VueSidebarMenu from 'vue-sidebar-menu'
-import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
-Vue.use(VueSidebarMenu)
-
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css';
 Vue.use(Mint);

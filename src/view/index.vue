@@ -1,14 +1,15 @@
 <template>
   <div id="indexBox">
-    <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-    <div class="indexHeader">
+    <sidebar></sidebar>
+    <mt-loadmore v-if="false" :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore">
+      <div class="indexHeader">
       <mt-header fixed title="今日热闻">
         <mt-button @click.native="handleClick" slot="left">
           <img src="../assets/menu_icon.png" height="20" width="20" slot="icon">
         </mt-button>
       </mt-header>
-    </div>
-    <div class="indexSwipe">
+      </div>
+      <div class="indexSwipe">
       <mt-swipe :auto="4000">
         <mt-swipe-item v-for="item in swipeList">
           <!-- 使用attachImageUrl方法转换url，解决防盗链问题 -->
@@ -16,18 +17,22 @@
           <span class="top-swipe_title">{{item.title}}</span>
         </mt-swipe-item>
       </mt-swipe>
-    </div>
-    <div class="indexList">
-      <mt-cell class="pd15" :title="item.title" v-for="item in topList" @click.native="toDetail(item.id)">
-        <img :src="attachImageUrl(item.images[0])" alt="">
-      </mt-cell>
-    </div>
+      </div>
+      <div class="indexList" 
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="10">
+        <mt-cell class="pd15" :title="item.title" v-for="item in topList" @click.native="toDetail(item.id)">
+          <img :src="attachImageUrl(item.images[0])" alt="">
+        </mt-cell>
+      </div>
     </mt-loadmore>
   </div>
 </template>
 
 <script>
 import { getSwipeListApi,getBeforeMsgApi } from '@/api/index.js'
+import Sidebar  from '../components/sidebar'
 
 export default {
   data() {
@@ -39,8 +44,11 @@ export default {
       // 记录消息日期
       newsDate: '',
       time: null,
-      allLoaded: '',
+      allLoaded: false,
     }
+  },
+  components:{
+    'sidebar': Sidebar
   },
   mounted() {
     this.getIndexList();
@@ -59,6 +67,8 @@ export default {
         this.swipeList = response.data.top_stories;
         // 获取轮播图下方列表信息
         this.topList = response.data.stories;
+        this.getBeforeDate()
+        this.getBeforeMsg(this.newsDate);
       }).catch(
       )
     },
@@ -90,17 +100,25 @@ export default {
     },
     // 下拉刷新
     loadTop: function(){
+      this.topList = [];
+      this.time = null;
       this.getIndexList();
       this.$refs.loadmore.onTopLoaded();
     },
-    // 上拉加载
-    loadBottom:function() {
+    // // 上拉加载
+    // loadBottom:function() {
+    //   // 加载更多数据
+    //   this.getBeforeDate();
+    //   this.getBeforeMsg(this.newsDate);
+    //   console.log('111')
+    //   // 若数据已全部获取完毕
+    //   this.$refs.loadmore.onBottomLoaded();
+    // },  
+    loadMore:function() {
       // 加载更多数据
       this.getBeforeDate();
       this.getBeforeMsg(this.newsDate);
-      // 若数据已全部获取完毕
-      this.$refs.loadmore.onBottomLoaded();
-    },  
+    },
     // 跳转详情页
     toDetail: function(id){
       this.$router.push({path:'/detail/'+id})
@@ -112,8 +130,6 @@ export default {
 
 <style lang="scss" scoped>
 #indexBox {
-    overflow:scroll;
-    height: 600px;
     .indexHeader {
       margin-bottom: 40px;
     }
