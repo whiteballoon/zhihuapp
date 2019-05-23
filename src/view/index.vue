@@ -1,7 +1,9 @@
 <template>
   <div id="indexBox">
-    <sidebar></sidebar>
-    <mt-loadmore v-if="false" :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore">
+    <welcome v-show="welcomeShow"></welcome>
+    <sidebar v-show="sidebarShow"></sidebar>
+    <div class="mask" v-show="sidebarShow" @click="showSidebar"></div>
+    <mt-loadmore  :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore">
       <div class="indexHeader">
       <mt-header fixed title="今日热闻">
         <mt-button @click.native="handleClick" slot="left">
@@ -33,6 +35,7 @@
 <script>
 import { getSwipeListApi,getBeforeMsgApi } from '@/api/index.js'
 import Sidebar  from '../components/sidebar'
+import welcome  from '../components/welcome'
 
 export default {
   data() {
@@ -45,15 +48,25 @@ export default {
       newsDate: '',
       time: null,
       allLoaded: false,
+      sidebarShow: false,
+      welcomeShow: true,
     }
   },
   components:{
-    'sidebar': Sidebar
+    'sidebar': Sidebar,
+    'welcome': welcome
   },
   mounted() {
     this.getIndexList();
+    this.hideWelcome();
   },
   methods: {
+    // 欢迎页隐藏
+    hideWelcome: function(){
+        setTimeout(() => {
+          this.welcomeShow = false;
+        }, 3500);
+    },
     // 图片防盗链问题解决
     attachImageUrl(srcUrl) {
         if (srcUrl !== undefined) {
@@ -105,15 +118,6 @@ export default {
       this.getIndexList();
       this.$refs.loadmore.onTopLoaded();
     },
-    // // 上拉加载
-    // loadBottom:function() {
-    //   // 加载更多数据
-    //   this.getBeforeDate();
-    //   this.getBeforeMsg(this.newsDate);
-    //   console.log('111')
-    //   // 若数据已全部获取完毕
-    //   this.$refs.loadmore.onBottomLoaded();
-    // },  
     loadMore:function() {
       // 加载更多数据
       this.getBeforeDate();
@@ -123,6 +127,18 @@ export default {
     toDetail: function(id){
       this.$router.push({path:'/detail/'+id})
     },
+    // 
+    showSidebar: function(e){
+      this.sidebarShow = false;
+      let bodyEl = document.body
+      bodyEl.style.position = ''
+    },
+    // 
+    handleClick: function(){
+      this.sidebarShow = true;
+      let bodyEl = document.body
+      bodyEl.style.position = 'fixed'
+    }
   },
   
 };
@@ -130,6 +146,14 @@ export default {
 
 <style lang="scss" scoped>
 #indexBox {
+  .mask {
+    position: fixed;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0,0, .3);
+    z-index: 15;
+  }
     .indexHeader {
       margin-bottom: 40px;
     }

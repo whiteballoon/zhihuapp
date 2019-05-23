@@ -52,6 +52,7 @@ export default {
     height: 100%;
     background-color: #232a30;
     color: #94999d;
+    z-index: 20;
     .userInfo {
         position: relative;
         height: 60px;
@@ -86,7 +87,26 @@ export default {
             }
         }
     }
-
+    .menuWrapper {
+        margin-top: 30px;
+        font-size: 14px;
+        li {
+            i {
+                vertical-align: middle;
+                &:first-child {
+                    font-size: 18px;
+                    margin-right: 5px;;
+                }
+                &:last-child {
+                    float: right;
+                    margin-right: 20px;
+                }
+            }
+            span {
+                vertical-align: middle;
+            }
+        }
+    }
     .bottomBox {
         position: absolute;
         left: 0;
