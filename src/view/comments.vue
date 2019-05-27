@@ -178,6 +178,7 @@ $mainColor:#26a2ff;
         height: 40px;
         line-height: 40px;
         padding-left: 20px;
+        margin-bottom: 40px;
         border-bottom: 1px solid #eee;
         span {
             font-weight: 600;
