@@ -34,38 +34,57 @@ vue2 + vue-router + axios + vuex + vue-cli + mint-ui + sass
 ### 评论页
 <img src="https://github.com/whiteballoon/zhihuapp/blob/master/images/pinglun.png" width="300">
 
+## 项目运行
 
-
-
-
-
-
-
-
-## Project setup
 ```
+# Project setup
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
+# Compiles and hot-reloads for development
 npm run serve
-```
-
-### Compiles and minifies for production
-```
+# Compiles and minifies for production
 npm run build
 ```
+## 总结
+### 1.知乎接口跨域问题（开发环境）
+调用知乎API时遇到了跨域问题，可以使用vue-cli3自带proxy配置进行解决，配置非常简单：
+#### 第一步在vue项目的根目录下找到vue.config.js文件，如果没有就 新建一个，再写入 以下内容
+```
+module.exports = {
+    devServer: {
+      proxy: {
+        '/api': { 
+          target: 'https://news-at.zhihu.com/', //需要请求的目标接口
+        }
+      }
+    }
+  }
+```
+#### 第二步将目标接口请求地址中的host和端口改成运行vue项目相同的host和端口
+此时请求api/xxx将会代理成http://news-at.zhihu.com/api/4/xxx 这样就不会有跨域问题了，当然这只适用于开发环境。
+### 2.图片防盗链问题
+知乎API返回的数据中的图片都是存储在知乎服务器上的url地址，直接请求会返回403，所以需要进行一些处理，这里我采用了yatessss同学在使用vue完成知乎日报web版的解决方案，使用Images.weserv.nl进行缓存图片，并在需要使用图片url的地方进行相应的替换。
+```
+ <template>
+        ...
+          <!-- 使用attachImageUrl方法转换url，解决防盗链问题 -->
+          <img :src="attachImageUrl(item.image)" alt="">
+        ...
+</template>
 
-### Run your tests
+<script>
+export default {
+  methods: {
+    // 图片防盗链问题解决
+    attachImageUrl(srcUrl) {
+        if (srcUrl !== undefined) {
+          return srcUrl.replace(/http\w{0,1}:\/\/p/g, 'https://images.weserv.nl/?url=p')
+        }
+    },
+  },
+  
+};
+</script>
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 参考
+感谢izzyleung 整理的 知乎日报API分析
+https://github.com/cccyb/vue-zhihu-daily#vue-zhihu-daily
